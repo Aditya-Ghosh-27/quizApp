@@ -1,35 +1,35 @@
 import { useReducer } from "react";
 
-const initialState = {count: 0, step: 1}
+const initialState = { count: 0, step: 1 }
 
 // reducer has 2 arguements -> current state and the action
 function reducer(state, action){
-  console.log(state, action)
+  console.log(state, action);
   // We could also change the current state by creating a new object by destructuring and spreading the previous state and overwritting the current state
   switch(action.type){
-    case "dec":
-      return {...state, count: state.count - state.step }
-      break
     case "inc":
-      return {...state, count: state.count + state.step }
+      return {...state, count: state.count + state.step}
+    case "dec":
+      return {...state, count: state.count - state.step}
     case "setCount":
       return {...state, count: action.payload }
     case "setStep":
       return {...state, step: action.payload }
     case "reset":
-      return initialState;
+      return initialState
     default:
-      throw new Error("Unknow action")
+      throw new Error("Unknown action");
   }
 }
 
+
 // When does this reducer function get called?
-// -> The reducer function gets called when you dispatch an action
+// -> The reducer function gets called when you dispatch an action, where action is basically an object containing all the state pieces.
 
 function DateCounter() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const {count, step} = state;
-  // const [state-variable, dispatch  is a function] = useReducer(reducer function, initial state value);
+  // const [state-object, dispatch  is a function] = useReducer(reducer function, initial state value);
   // This dispatch function can also be used to update the state
 
   // This mutates the date object.
@@ -39,30 +39,26 @@ function DateCounter() {
   // Here actually we have 3 actions -> 1.Increasing the state 2. Decreasing the state 3. Setting the state
 
   const dec = function () {
-    dispatch({type: "dec"});
-    // setCount((count) => count - 1);
-    // setCount((count) => count - step);
+    dispatch({type: "dec" })
   };
 
   const inc = function () {
-    dispatch({type: "inc"})
+    dispatch({ type: "inc" })
     // dispatch(1);  the value of action is what we pass into the dispatch function
-    // setCount((count) => count + 1);
-    // setCount((count) => count + step);
   };
 
   const defineCount = function (e) {
-    dispatch({type: "setCount", payload: Number(e.target.value)})
+    dispatch({ type: "setCount", payload: Number(e.target.value)})
     // setCount(Number(e.target.value));
   };
 
   const defineStep = function (e) {
-    dispatch({type: "setStep", payload: Number(e.target.value)})
+    dispatch({ type: "setStep", payload: Number(e.target.value)})
     // setStep(Number(e.target.value));
   };
 
   const reset = function () {
-    dispatch({type: "reset"})
+    dispatch({ type: "reset" })
     // setCount(0);
     // setStep(1);
   };
@@ -94,4 +90,5 @@ function DateCounter() {
     </div>
   );
 }
+
 export default DateCounter;
