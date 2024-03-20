@@ -2,6 +2,9 @@ import { useEffect, useReducer } from "react"
 import Body from "./Body"
 import  DateCounter  from "./DateCounter"
 import Header from "./Header"
+import Loader from "./Loader"
+import Error from "./Error"
+import StartScreen from "./StartScreen"
 
 // 1.We have to grab this URL and then fetch it into our application. // We want to load the data on mount and for that we need to use useEffect hook
 // 2. At some point we will have to display the fetched data here in the UI and so for that we are going to need state which we will get using the useReducer hook
@@ -32,7 +35,9 @@ function reducer(state, action){
 }
 
 export default function App({children}){
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [{quesions, status}, dispatch] = useReducer(reducer, initialState);
+
+  const numQuestions = quesions.length;
   
   useEffect(async function(){
     try {
@@ -47,8 +52,9 @@ export default function App({children}){
     <div className="app">
       <Header />
       <Body >  
-        <p>1/15</p>
-        <p>Questions?</p>
+        {status === 'loading' && <Loading />}
+        {status === 'error' && <Error />}
+        {status === 'ready' && <StartScreen numQuestions={numQuestions}/>}
       </Body>
     </div>
   )
